@@ -1,19 +1,13 @@
 const initialState={
-    weather:[]
+    weather:[],
+    check:true
 }
-export const weather=(state=initialState,action)=>{
+export const weatherd=(state=initialState,action)=>{
     switch(action.type){
-        case 'ON_CLICK':{
-                fetch(`https://api.openweathermap.org/data/2.5/weather?q=${action.payload}&appid=989aeb61637efc432e57044c6c5bd577`).then(
-                    (Response)=>{
-                        return Response.json()
-                    }).then((json)=>{return{
-                        ...state,
-                        weather:json.weather
-                    },
-                    console.log(json.weather)
-                    });
-                    };
+        case "ON_CLICK":{
+                    return{...state,check:true,weather:action.payload}
+                }
+        //case "ERROR":{return{...state,check:false}}
         default: 
                 return state;
     }
