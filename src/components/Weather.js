@@ -1,38 +1,42 @@
-import React,{Component} from 'react';
-import {connect} from 'react-redux';
-import {CountryList} from '../container/CountryList.js';
-import { bindActionCreators } from 'redux';
-import {onclick} from '../actions/action.js';
-import {Country} from '../container/Country.js';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { getWeather } from "../actions/action.js";
+import Country from "../container/Country.js";
 
-const mapStateToProps=(store)=>{
-    return{
-        weathers:store.weather,
-        check:store.check
-    }
+class Weather extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { item: "" };
+  }
+  handlechange = (event) => {
+    this.setState({ item: event.target.value }, () => console.log(this.state));
+  };
+  render() {
+    return (
+      <div>
+        <input
+          value={this.state.item}
+          placeholder="Country..."
+          onChange={this.handlechange}
+          type="text"
+        />
+        <button onClick={() => this.props.getWeather(this.state.item)}>
+          Send
+        </button>
+        <Country />
+      </div>
+    );
+  }
 }
-const mapDispatchToProps=(dispatch)=>{
-    return bindActionCreators({
-        onclick
-    },dispatch);
-}
-class Weather extends Component{
-    constructor(props){
-        super(props);
-        this.state={item:""};
-    }
-    handlechange=(event)=>
+
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(
     {
-        this.setState({item:event.target.value});
-    }
-    render(){
-        return(
-            <div>
-                <CountryList onclick={this.props.onclick} change={this.handlechange} value={this.state.item}/>
-                <Country weather={this.props.weathers} check={this.props.check}/>
-                
-            </div>
-        )
-    }
-}
-export default connect(mapStateToProps,mapDispatchToProps)(Weather);
+      getWeather,
+    },
+    dispatch
+  );
+};
+
+export default connect(null, mapDispatchToProps)(Weather);
